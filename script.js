@@ -30,6 +30,11 @@ const repoSearchResults = document.createElement('div');
 repoSearchResults.setAttribute('class','d-flex flex-column justify-content-center align-items-center');
 repoSearchResults.setAttribute('id', 'repoResults');
 
+const searchDisplayMessage = document.createElement('strong');
+searchDisplayMessage.innerHTML = 'Displaying repositories sorted by stars in descending order';
+searchDisplayMessage.style.borderBottom = "2px solid black";
+
+repoSearchResults.append(searchDisplayMessage);
 repoHeaderRow.append(repoHeader, repoFiles);
 repoHead.append(repoHeaderRow);
 repoTable.append(repoHead, repoBody);
@@ -67,7 +72,7 @@ searchUserForm.addEventListener('submit', (e) => {
 
         searchUser()
         .then(userDetails => {
-            console.log(userDetails);
+
             //fetch repos
             async function getRepos(){
                 const res = await fetch(userDetails.items[0].repos_url, {
@@ -80,7 +85,7 @@ searchUserForm.addEventListener('submit', (e) => {
 
             getRepos().
             then(repos => {
-                console.log(repos);
+
                 //Table creation for repo names
                 for(let i=0; i<repos.length; i++){
                     let repo = document.createElement('tr');
@@ -104,7 +109,6 @@ searchUserForm.addEventListener('submit', (e) => {
 
                     getRepoFiles()
                     .then(files => {
-                        console.log(files);
                         let fileNames = '';
                         files.forEach(file => {
                             fileNames += file.name + ', ';
@@ -140,11 +144,6 @@ searchUserForm.addEventListener('submit', (e) => {
 
         searchRepo()
         .then(repos => {
-            console.log(repos);
-            const searchDisplayMessage = document.createElement('strong');
-            searchDisplayMessage.innerHTML = 'Displaying repositories sorted by stars in descending order';
-            searchDisplayMessage.style.borderBottom = "2px solid black";
-            repoSearchResults.append(searchDisplayMessage);
 
             for(let i=0; i<repos.items.length; i++){
                 let repoFullName = document.createElement('p');
